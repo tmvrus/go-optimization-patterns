@@ -4,7 +4,7 @@ import "sync"
 
 var pool = sync.Pool{
 	New: func() any {
-		b := make([]int, 0, 1_000_000)
+		b := make([]int, 1_000_000)
 		return b
 	},
 }
@@ -12,7 +12,7 @@ var pool = sync.Pool{
 func Good() {
 	result := pool.Get().([]int)
 	for i := 0; i < 1_000_000; i++ {
-		result = append(result, i*i)
+		result[i] = i * i
 	}
 	// Важно, мы возвращем обратно в пул "грязную" память
 	pool.Put(result)
